@@ -6,7 +6,7 @@ WORKDIR /app
 
 # Copy only the necessary files
 COPY requirements.txt .
-COPY src/scraping_job ./src/scraping_job
+COPY src/scraping_job ./scraping_job
 
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt

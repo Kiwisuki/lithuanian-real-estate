@@ -2,11 +2,10 @@ import asyncio
 import logging
 
 from aiohttp import ClientSession as RequestSession
-
-from src.scraping_job import ALL_OBJECT_TYPES
-from src.scraping_job.database.connection import get_engine_and_session
-from src.scraping_job.scraping.links_retrieval import retrieve_object_ids
-from src.scraping_job.scraping.object_handling import get_scraped_ids, scrape_listing
+from scraping_job import ALL_OBJECT_TYPES
+from scraping_job.database.connection import get_engine_and_session
+from scraping_job.scraping.links_retrieval import retrieve_object_ids
+from scraping_job.scraping.object_handling import get_scraped_ids, scrape_listing
 
 LOGGER = logging.getLogger(__name__)
 PROCESSING_BATCH_SIZE = 20

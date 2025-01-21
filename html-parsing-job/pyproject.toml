@@ -1,10 +1,9 @@
 [tool.poetry]
-name = "scraping_job"
+name = "parsing_job"
 version = "0.1.0"
 description = "Example template for Python applications"
 authors = ["OBDeleven Data Team"]
 readme = "README.md"
-package-mode = false
 
 [tool.poetry.dependencies]
 python = "~3.11"
@@ -14,7 +13,6 @@ sqlalchemy = "^2.0.31"
 psycopg2-binary = "^2.9.9"
 lxml = "^5.2.2"
 pydantic = "^2.8.2"
-aiohttp = "^3.10.5"
 
 [tool.poetry.group.development.dependencies]
 ruff = '^0.0.285'
@@ -33,12 +31,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.ruff]
-line-length = 120
-target-version = "py311"
-pydocstyle.convention = "google"
-select = [
-    "ALL", # include all the rules, including new ones
-]
+# Read more: 'https://beta.ruff.rs/docs/rules/'
 ignore = [
     "G004", # logging with f-strings
     "E501", # line too long
@@ -57,6 +50,43 @@ ignore = [
     "D211", # missing blank line before class docstring
     "D213", # missing blank line before method docstring
 ]
+select = [
+    'B',   # flake8-bugbear
+    'C4',  # flake8-comprehensions
+    'ERA', # flake8-eradicate/eradicate
+    'PIE', # flake8-pie
+    'SIM', # flake8-simplify
+    'TID', # flake8-tidy-imports
+    'PTH', # flake8-use-pathlib
+    'ARG', # flake8-unused-arguments
+    'Q', # flake8-quotes
+    'PT', # flake8-pytest-style
+    'T20', # flake8-print
+    'G', # flake8-logging-format
+    'ICN', # flake8-import-conventions
+    'COM', # flake8-commas
+    'A', # flake8-builtins
+    'D', # pydocstyle
+    'I',   # isort
+    'N',   # pep8-naming
+    'RUF', # ruff checks
+    'FLY', # flynt
+    'PD', # pandas-vet
+]
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    '.git',
+    '.gitlab',
+    '.mypy_cache',
+    '.pytype',
+    '.ruff_cache',
+    '.venv',
+    '__pypackages__',
+    'venv',
+]
+
+line-length = 88 # Same as Black
 
 [tool.ruff.flake8-quotes]
 docstring-quotes = 'double'

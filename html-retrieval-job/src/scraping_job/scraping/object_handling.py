@@ -1,11 +1,10 @@
 import logging
 
 from aiohttp import ClientSession
+from scraping_job.database.schemas import ScrapedHtml
+from scraping_job.scraping.html_retrieval import scrape_url
 from sqlalchemy.orm import Session
 from sqlalchemy.sql import select
-
-from src.scraping_job.database.schemas import ScrapedHtml
-from src.scraping_job.scraping.html_retrieval import scrape_url
 
 LOGGER = logging.getLogger(__name__)
 

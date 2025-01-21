@@ -5,9 +5,8 @@ import re
 from aiohttp import ClientSession as RequestSession
 from bs4 import BeautifulSoup
 from pydantic import BaseModel
-
-from src.scraping_job import SEARCH_URLS
-from src.scraping_job.scraping.html_retrieval import scrape_url
+from scraping_job import SEARCH_URLS
+from scraping_job.scraping.html_retrieval import scrape_url
 
 LOGGER = logging.getLogger(__name__)
 

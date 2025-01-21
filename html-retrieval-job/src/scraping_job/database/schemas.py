@@ -1,10 +1,9 @@
 import uuid
 
+from scraping_job.database import Base
 from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
-
-from src.scraping_job.database import Base
 
 
 class ScrapedHtml(Base):

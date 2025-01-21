@@ -4,7 +4,6 @@ import os
 from collections.abc import AsyncGenerator
 
 from fastapi import Depends, FastAPI
-
 from scraping_service.helpers.error_handling import handle_errors
 from scraping_service.helpers.lifespan import lifespan
 from scraping_service.helpers.schemas import (
@@ -29,7 +28,6 @@ async def get_semaphore() -> AsyncGenerator[None, None]:
 
 @app.get(
     "/scrape",
-    response_model=ScrapeResponse,
     dependencies=[Depends(get_semaphore)],
 )
 @handle_errors
@@ -41,7 +39,6 @@ async def scrape(request: ScrapeRequest) -> ScrapeResponse:
 
 @app.get(
     "/search",
-    response_model=list[SearchResult],
     dependencies=[Depends(get_semaphore)],
 )
 @handle_errors
@@ -50,7 +47,7 @@ async def search(request: SearchRequest) -> list[SearchResult]:
     return await app.driver_client.search_google(request.query, request.wait_to_load)
 
 
-@app.get("/health", response_model=dict[str, str])
+@app.get("/health")
 async def health_check() -> dict[str, str]:
     """Health check endpoint to determine if the service is running."""
     return {"STATUS": "OK", "MESSAGE": "Service is running."}

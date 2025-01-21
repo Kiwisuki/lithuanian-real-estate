@@ -47,13 +47,15 @@ services:
       timeout: 10s
       retries: 3
       start_period: 60s
-      
+    networks:
+      - default_network
+
 # ================================================
 # Jobs
 # ================================================
   html_scraper:
     build:
-      context: ./scraping-job
+      context: ./html-retrieval-job
     depends_on:
       db:
         condition: service_healthy
@@ -61,12 +63,12 @@ services:
         condition: service_healthy
     environment:
       - SCRAPING_SERVICE_URL=http://scraping_service:8000/scrape
-      - DATABASE_URL=postgresql://myuser:mypassword@db:5432/myapp
+      - DATABASE_URI=postgresql://myuser:mypassword@db:5432/myapp
       - PAGE_LIMIT=10
       - LISTINGS_FROM=2022-01-01
     networks:
       - default_network
-  
+
 volumes:
   postgres_data:
   pgadmin_data:

@@ -1,8 +1,7 @@
+from scraping_job.database import DATABASE_URI, Base
 from sqlalchemy import create_engine
 from sqlalchemy.engine.base import Engine
 from sqlalchemy.orm import Session, sessionmaker
-
-from src.scraping_job.database import DATABASE_URI, Base
 
 
 def get_engine_and_session(database_url: str = DATABASE_URI) -> tuple[Engine, Session]:
