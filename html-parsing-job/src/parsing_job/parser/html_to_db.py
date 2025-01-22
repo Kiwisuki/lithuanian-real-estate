@@ -1,17 +1,18 @@
+import logging
 from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from parsing_job.database.schemas import ParsedFlat
+from parsing_job.database.schemas import BronzeFlat
 from parsing_job.parser.parse_html import parse_flat_html
 from parsing_job.parser.pydantic_models import Parsed
-import logging
 
 LOGGER = logging.getLogger(__name__)
 
-def pyd_to_orm(parsed_data: Parsed, html_id: UUID, object_type: str) -> ParsedFlat:
+
+def pyd_to_orm(parsed_data: Parsed, html_id: UUID, object_type: str) -> BronzeFlat:
     """Insert parsed data into the database."""
-    return ParsedFlat(
+    return BronzeFlat(
         price=parsed_data.price,
         house_number=parsed_data.main_info.house_number,
         apartment_number=parsed_data.main_info.apartment_number,
@@ -40,7 +41,12 @@ def pyd_to_orm(parsed_data: Parsed, html_id: UUID, object_type: str) -> ParsedFl
     )
 
 
-def parse_and_store_flat(html_content: str, html_id: UUID, object_type: str, db_session: Session):
+def parse_and_store_flat(
+    html_content: str,
+    html_id: UUID,
+    object_type: str,
+    db_session: Session,
+):
     """Parse and store the HTML content."""
     try:
         parsed_data = parse_flat_html(html_content)

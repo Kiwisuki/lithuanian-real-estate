@@ -7,11 +7,11 @@ from sqlalchemy.sql import func
 from parsing_job.database import Base
 
 
-class ScrapedHtml(Base):
+class RawListingHtml(Base):
 
     """Model for storing scraped HTML content."""
 
-    __tablename__ = "scraped_html"
+    __tablename__ = "raw_listing_htmls"
     html_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     date_scraped = Column(DateTime, default=func.now())
     object_type = Column(String, nullable=False)
@@ -19,8 +19,8 @@ class ScrapedHtml(Base):
     html_content = Column(String, nullable=True)
 
 
-class ParsedFlat(Base):
-    __tablename__ = "parsed_flats"
+class BronzeFlat(Base):
+    __tablename__ = "bronze_flats"
 
     parsed_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     price = Column(String, nullable=False)
@@ -45,13 +45,15 @@ class ParsedFlat(Base):
     nearest_store = Column(String, nullable=True)
     images = Column(JSONB, nullable=False)  # JSONB type to store list of image URLs
     coordinates = Column(
-        JSONB, nullable=False,
+        JSONB,
+        nullable=False,
     )  # JSONB type to store list of coordinates
     is_map_accurate = Column(Boolean, nullable=False)
     data_parsed = Column(DateTime, default=func.now())
 
     # Foreign key to the ScrapedHtml table
     scraped_html_id = Column(
-        UUID(as_uuid=True), nullable=False,
+        UUID(as_uuid=True),
+        nullable=False,
     )
     object_type = Column(String, nullable=False)

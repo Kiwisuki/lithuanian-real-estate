@@ -49,6 +49,7 @@ ignore = [
     "D103", # missing docstring in public function
     "D211", # missing blank line before class docstring
     "D213", # missing blank line before method docstring
+    "PT001",
 ]
 select = [
     'B',   # flake8-bugbear

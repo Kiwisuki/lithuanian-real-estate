@@ -1,7 +1,6 @@
 from pathlib import Path
 
 import pytest
-
 from src.scraping_job.scraping.links_retrieval import (
     filter_strings,
     get_max_page_number,
@@ -14,7 +13,7 @@ TEST_PAGES_DIR = PROJECT_ROOT / "tests" / "test_pages"
 TEST_PAGES_FILES = ["butai.html", "namai.html", "butu_nuoma.html", "namu_nuoma.html"]
 
 
-@pytest.fixture()
+@pytest.fixture
 def list_pages_html() -> list[str]:
     """Return the HTML content of the test pages."""
     pages = []

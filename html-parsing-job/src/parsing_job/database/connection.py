@@ -10,5 +10,5 @@ from parsing_job.database import DATABASE_URI, Base
 def get_engine_and_session(database_url: str = DATABASE_URI) -> Tuple[Engine, Session]:
     engine = create_engine(database_url)
     Base.metadata.create_all(engine)
-    Session = sessionmaker(bind=engine)
+    Session = sessionmaker(bind=engine)  # noqa: N806
     return engine, Session()

@@ -2,8 +2,8 @@ services:
 # ================================================
 # Database services
 # ================================================
-  db:
-    image: postgres:latest
+  db:  # TODO: Change to postgres, add healthcheck, deploy on server
+    image: postgres:14  # Specify a stable version
     environment:
       POSTGRES_DB: myapp
       POSTGRES_USER: myuser
@@ -20,7 +20,7 @@ services:
     networks:
       - default_network
 
-  pgadmin:
+  pgadmin: # TODO: Deploy on server
     image: dpage/pgadmin4:latest
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@example.com
@@ -37,10 +37,10 @@ services:
 # ================================================
 # Miscellaneous services
 # ================================================
-  scraping_service:
+  scraping-service: # TODO: Deploy on server
     extends:
       file: ./scraping-service/compose.yml
-      service: scraping_service
+      service: scraping-service
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/health || exit 1"]
       interval: 180s
@@ -53,27 +53,35 @@ services:
 # ================================================
 # Jobs
 # ================================================
-  html_scraper:
+  html-retrieval-job:
     build:
       context: ./html-retrieval-job
     depends_on:
       db:
         condition: service_healthy
-      scraping_service:
+      scraping-service:
         condition: service_healthy
     environment:
-      - SCRAPING_SERVICE_URL=http://scraping_service:8000/scrape
+      - SCRAPING_SERVICE_URL=http://scraping-service:8000/scrape
       - DATABASE_URI=postgresql://myuser:mypassword@db:5432/myapp
       - PAGE_LIMIT=10
       - LISTINGS_FROM=2022-01-01
     networks:
       - default_network
 
+  html-parsing-job:
+    build:
+      context: ./html-parsing-job
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - DATABASE_URI=postgresql://myuser:mypassword@db:5432/myapp
+    networks:
+      - default_network
 volumes:
   postgres_data:
   pgadmin_data:
-  airflow-postgres-db-volume:
-    name: airflow-postgres-db-volume
 
 networks:
   default_network:

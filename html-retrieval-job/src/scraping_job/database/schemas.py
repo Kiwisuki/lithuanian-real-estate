@@ -6,10 +6,10 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 
 
-class ScrapedHtml(Base):
+class RawListingHtml(Base):
     """Model for storing scraped HTML content."""
 
-    __tablename__ = "scraped_html"
+    __tablename__ = "raw_listing_htmls"
     html_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     date_scraped = Column(DateTime, default=func.now())
     object_type = Column(String, nullable=False)
