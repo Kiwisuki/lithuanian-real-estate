@@ -3,17 +3,18 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from parsing_job.database.schemas import BronzeFlat
-from parsing_job.parser.parse_html import parse_flat_html
-from parsing_job.parser.pydantic_models import Parsed
+from flat_processing_job.database.schemas import ParsedFlat, RawListingHtml
+from flat_processing_job.parser.parse_html import parse_flat_html
+from flat_processing_job.parser.pydantic_models import Parsed
 
 LOGGER = logging.getLogger(__name__)
 
 
-def pyd_to_orm(parsed_data: Parsed, html_id: UUID, object_type: str) -> BronzeFlat:
+def pyd_to_orm(parsed_data: Parsed, html_orm: RawListingHtml, object_type: str) -> ParsedFlat:
     """Insert parsed data into the database."""
-    return BronzeFlat(
+    return ParsedFlat(
         price=parsed_data.price,
+        address=parsed_data.address,
         house_number=parsed_data.main_info.house_number,
         apartment_number=parsed_data.main_info.apartment_number,
         area=parsed_data.main_info.area,
@@ -36,24 +37,24 @@ def pyd_to_orm(parsed_data: Parsed, html_id: UUID, object_type: str) -> BronzeFl
         images=parsed_data.images,
         coordinates=parsed_data.coordinates,
         is_map_accurate=parsed_data.is_map_accurate,
-        scraped_html_id=html_id,
+        scraped_html_id=html_orm.html_id,
         object_type=object_type,
+        url=html_orm.url,
     )
 
 
 def parse_and_store_flat(
-    html_content: str,
-    html_id: UUID,
+    html_orm: RawListingHtml,
     object_type: str,
     db_session: Session,
 ):
     """Parse and store the HTML content."""
     try:
-        parsed_data = parse_flat_html(html_content)
+        parsed_data = parse_flat_html(html_orm.html_content)
     except AttributeError:
-        LOGGER.error(f"Failed to parse HTML content for {html_id}")
+        LOGGER.error(f"Failed to parse HTML content for {html_orm.html_id}")
         return
-    parsed_flat = pyd_to_orm(parsed_data, html_id, object_type)
+    parsed_flat = pyd_to_orm(parsed_data, html_orm, object_type)
     db_session.add(parsed_flat)
     db_session.commit()
-    LOGGER.info(f"Stored parsed data for {html_id}")
+    LOGGER.info(f"Stored parsed data for {html_orm.html_id}")

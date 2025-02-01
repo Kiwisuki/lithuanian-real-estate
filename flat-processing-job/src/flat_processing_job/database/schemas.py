@@ -4,7 +4,7 @@ from sqlalchemy import Boolean, Column, DateTime, String
 from sqlalchemy.dialects.postgresql import JSONB, UUID
 from sqlalchemy.sql import func
 
-from parsing_job.database import Base
+from flat_processing_job.database import Base
 
 
 class RawListingHtml(Base):
@@ -24,7 +24,6 @@ class ParsedFlat(Base):
 
     parsed_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     price = Column(String, nullable=False)
-    address = Column(String, nullable=False)
     house_number = Column(String, nullable=True)
     apartment_number = Column(String, nullable=True)
     area = Column(String, nullable=True)
@@ -44,17 +43,17 @@ class ParsedFlat(Base):
     nearest_kindergarten = Column(String, nullable=True)
     nearest_school = Column(String, nullable=True)
     nearest_store = Column(String, nullable=True)
-    images = Column(JSONB, nullable=False)  # JSONB type to store list of image URLs
+    images = Column(JSONB, nullable=False)
     coordinates = Column(
         JSONB,
         nullable=False,
-    )  # JSONB type to store list of coordinates
+    )
     is_map_accurate = Column(Boolean, nullable=False)
     data_parsed = Column(DateTime, default=func.now())
 
-    # Foreign key to the ScrapedHtml table
     scraped_html_id = Column(
         UUID(as_uuid=True),
         nullable=False,
     )
     object_type = Column(String, nullable=False)
+    url = Column(String, nullable=False)

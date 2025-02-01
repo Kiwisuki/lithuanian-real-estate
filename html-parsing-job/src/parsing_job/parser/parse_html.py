@@ -8,9 +8,8 @@ from parsing_job.parser.pydantic_models import Distances, MainInfo, Parsed
 def parse_flat_html(html_content: str) -> Parsed:
     """Parse the HTML content to extract required property data."""
     soup = BeautifulSoup(html_content, "lxml")
-
+    address = soup.find("h1", class_="obj-header-text").text.strip()
     price = soup.find("span", class_="price-eur").text.strip()
-
     # Prepare main_info
     main_info_soup = soup.find("dl", class_="obj-details")
     main_info_data = dict(
@@ -47,6 +46,7 @@ def parse_flat_html(html_content: str) -> Parsed:
     # Create a Parsed instance with the extracted data
     return Parsed(
         price=price,
+        address=address,
         main_info=main_info,
         description=description,
         distances=distances,

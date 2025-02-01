@@ -31,6 +31,7 @@ class Distances(BaseModel):
 
 class Parsed(BaseModel):
     price: str
+    address: str
     main_info: MainInfo
     description: str
     distances: Distances
