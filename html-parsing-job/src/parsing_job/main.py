@@ -8,6 +8,7 @@ from parsing_job.parser.html_to_db import parse_and_store_flat
 
 LOGGER = logging.getLogger(__name__)
 
+
 def parsing_job(
     object_types_to_parse: List[str] = ALL_OBJECT_TYPES,
 ) -> None:
@@ -16,7 +17,7 @@ def parsing_job(
     scraped_ids = get_scraped_data(session, object_types_to_parse)
     for object_type, html_data in scraped_ids.items():
         for html_orm in html_data:
-            parse_and_store_flat(html_orm.html_content, html_orm.html_id, object_type, session)
+            parse_and_store_flat(html_orm, object_type, session)
     session.close()
     engine.dispose()
 

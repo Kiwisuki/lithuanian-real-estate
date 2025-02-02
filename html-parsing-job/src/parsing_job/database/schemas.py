@@ -23,6 +23,7 @@ class ParsedFlat(Base):
     __tablename__ = "partially_parsed_flats"
 
     parsed_id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    url = Column(String, nullable=False)
     price = Column(String, nullable=False)
     address = Column(String, nullable=False)
     house_number = Column(String, nullable=True)
@@ -50,7 +51,7 @@ class ParsedFlat(Base):
         nullable=False,
     )  # JSONB type to store list of coordinates
     is_map_accurate = Column(Boolean, nullable=False)
-    data_parsed = Column(DateTime, default=func.now())
+    datetime_parsed = Column(DateTime, default=func.now())
 
     # Foreign key to the ScrapedHtml table
     scraped_html_id = Column(
