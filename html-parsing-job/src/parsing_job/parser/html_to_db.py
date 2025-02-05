@@ -3,14 +3,18 @@ from uuid import UUID
 
 from sqlalchemy.orm import Session
 
-from flat_processing_job.database.schemas import ParsedFlat, RawListingHtml
-from flat_processing_job.parser.parse_html import parse_flat_html
-from flat_processing_job.parser.pydantic_models import Parsed
+from parsing_job.database.schemas import ParsedFlat, RawListingHtml
+from parsing_job.parser.parse_html import parse_flat_html
+from parsing_job.parser.pydantic_models import Parsed
 
 LOGGER = logging.getLogger(__name__)
 
 
-def pyd_to_orm(parsed_data: Parsed, html_orm: RawListingHtml, object_type: str) -> ParsedFlat:
+def pyd_to_orm(
+    parsed_data: Parsed,
+    html_orm: RawListingHtml,
+    object_type: str,
+) -> ParsedFlat:
     """Insert parsed data into the database."""
     return ParsedFlat(
         price=parsed_data.price,
